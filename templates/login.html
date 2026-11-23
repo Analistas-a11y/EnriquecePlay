@@ -184,9 +184,8 @@
   <!-- Integracao SSO com a plataforma Estrategia OS -->
   <script>
     (function () {
+      // As origens permitidas vem do servidor (variavel ESTRATEGIA_OS_ALLOWED_ORIGINS), nunca fixas aqui.
       const allowedOrigins = new Set([
-        'https://estrategia-os.vercel.app',
-        'http://localhost:47821',
         {% if allowed_origins %}
           {% for o in allowed_origins %}
             '{{ o }}',

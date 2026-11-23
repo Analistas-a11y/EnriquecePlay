@@ -147,6 +147,13 @@ def get_client_ip() -> str:
     """Extrai o IP real do cliente, considerando proxies reversos e cabecalhos de encaminhamento."""
     if not request:
         return "127.0.0.1"
+    # Atras do nginx da Coolify + tunel, o CF-Connecting-IP vira o IP do servidor da Coolify.
+    # O nginx grava o IP real do visitante em um cabecalho proprio; CLIENT_IP_HEADER diz qual usar.
+    custom_header = os.environ.get("CLIENT_IP_HEADER", "").strip()
+    if custom_header:
+        custom_ip = (request.headers.get(custom_header) or "").split(",")[0].strip()
+        if custom_ip:
+            return custom_ip
     cf_ip = request.headers.get("CF-Connecting-IP")
     if cf_ip:
         return cf_ip.strip()
@@ -3911,7 +3918,7 @@ def deduplicate_rows(rows: List[Dict[str, Any]]) -> Tuple[List[Dict[str, Any]], 
 def login_page():
     if session.get("user_id"):
         return redirect(url_for("index"))
-    allowed_origins = list(ALLOWED_ORIGINS) if "ALLOWED_ORIGINS" in globals() else ["https://estrategia-os.vercel.app", "http://localhost:47821"]
+    allowed_origins = list(ALLOWED_ORIGINS) if "ALLOWED_ORIGINS" in globals() else ["https://estrategiaos.bookplay.com.br", "http://localhost:47821"]
     return render_template("login.html", allowed_origins=allowed_origins)
 
 

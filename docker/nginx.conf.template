@@ -1,0 +1,76 @@
+# Front na Coolify: serve /static e repassa o resto (paginas, login e /api/) para o backend em ${BACKEND_URL}.
+# O entrypoint do nginx troca ${BACKEND_URL}, ${NGINX_LOCAL_RESOLVERS} e ${FRAME_ANCESTORS} ao subir o conteiner.
+# As variaveis do nginx ($host, $uri...) nao sao tocadas.
+
+# "https://abc.exemplo.com" -> "abc.exemplo.com": o endereco do back so responde se o Host for o dele
+map "${BACKEND_URL}" $backend_host {
+    "~^https?://(?<h>[^/]+)" $h;
+    default "";
+}
+
+# https quando o Traefik da Coolify ja avisou; senao o esquema desta conexao
+map $http_x_forwarded_proto $proto_do_cliente {
+    default $http_x_forwarded_proto;
+    "" $scheme;
+}
+
+# IP real do visitante: CF-Connecting-IP (Cloudflare) > primeiro do X-Forwarded-For (Traefik) > conexao direta
+map $http_x_forwarded_for $xff_primeiro {
+    "~^\s*(?<f>[^,\s]+)" $f;
+    default "";
+}
+map $xff_primeiro $client_ip_xff {
+    default $xff_primeiro;
+    "" $remote_addr;
+}
+map $http_cf_connecting_ip $client_ip_real {
+    default $http_cf_connecting_ip;
+    "" $client_ip_xff;
+}
+
+server {
+    listen 80;
+    server_name _;
+    root /usr/share/nginx/html;
+
+    # Atras do Traefik este nginx so enxerga http. Sem isto, redirecionamentos de pasta sairiam com http://
+    absolute_redirect off;
+
+    # resolve o endereco do back a cada 30 s (sem isso o nginx guardaria o IP para sempre)
+    resolver ${NGINX_LOCAL_RESOLVERS} valid=30s ipv6=off;
+    set $backend "${BACKEND_URL}";
+
+    # O backend aceita ate 1 GB; o upload do site e feito em pedacos (/api/upload/chunk).
+    # A Cloudflare (plano gratis) limita cada requisicao a 100 MB.
+    client_max_body_size 1100m;
+
+    gzip on;
+    gzip_comp_level 5;
+    gzip_min_length 1024;
+    gzip_types text/plain text/css text/javascript application/javascript application/json application/xml image/svg+xml;
+
+    location = /nginx-health {
+        access_log off;
+        default_type text/plain;
+        return 200 "ok";
+    }
+
+    # ---- site: arquivos estaticos (app.js, style.css, logos) servidos aqui ----
+    # O backend acrescenta ?v=<data do arquivo> na URL; por isso o navegador sempre revalida (ETag) em vez de guardar por muito tempo.
+    # Se o arquivo nao existir nesta imagem (ex.: backend mais novo que o front), pede ao backend.
+    location ^~ /static/ {
+        add_header Cache-Control "no-cache";
+        include /etc/nginx/conf.d/frame-headers.inc;
+        try_files $uri @backend;
+    }
+
+    location @backend {
+        include /etc/nginx/proxy-backend.conf;
+    }
+
+    # ---- back: tudo o mais (/, /login, /logout, /api/..., /favicon.*) ----
+    # O backend ja envia o Content-Security-Policy (frame-ancestors) nas paginas; o nginx nao duplica aqui.
+    location / {
+        include /etc/nginx/proxy-backend.conf;
+    }
+}
