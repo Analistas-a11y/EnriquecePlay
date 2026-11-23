@@ -14,6 +14,7 @@ C. Seguranca de Iframe - cabecalhos Content-Security-Policy: frame-ancestors
 from __future__ import annotations
 
 import hmac
+import ipaddress
 import json
 import os
 import re
@@ -586,6 +587,26 @@ def auth_sso():
 # MIDDLEWARE DE CABECALHOS HTTP (CSP / IFRAME)
 # ==============================================================================
 
+def is_plain_http_ip_access() -> bool:
+    """
+    True quando o acesso e por http:// com endereco numerico (ex.: http://192.168.3.123:9376).
+    Nesse caso o navegador descarta cookies Secure, entao o cookie de sessao precisa ser comum (Lax).
+    Nunca vale para https, dominios ou tuneis: la o cookie continua Secure/SameSite=None/Partitioned.
+    """
+    try:
+        if request.is_secure or request.headers.get("X-Forwarded-Proto", "").lower().startswith("https"):
+            return False
+        host = (request.host or "").strip()
+        if host.startswith("["):  # IPv6 literal: [::1]:9376
+            host = host[1:].split("]", 1)[0]
+        else:
+            host = host.rsplit(":", 1)[0] if host.count(":") == 1 else host
+        ipaddress.ip_address(host)
+        return True
+    except Exception:
+        return False
+
+
 def apply_iframe_security_headers(response: Any) -> Any:
     """
     Injeta cabecalhos de seguranca permitindo incorporacao em iframes do Estrategia OS.
@@ -607,7 +628,7 @@ def apply_iframe_security_headers(response: Any) -> Any:
 
     # Garante que cookies de sessao sejam aceitos em contexto cross-origin de iframes (Chrome CHIPS / Partitioned)
     set_cookies = response.headers.getlist("Set-Cookie")
-    if set_cookies:
+    if set_cookies and not is_plain_http_ip_access():
         response.headers.remove("Set-Cookie")
         for sc in set_cookies:
             # Garante Secure
@@ -633,8 +654,21 @@ class PartitionedSessionInterface(SecureCookieSessionInterface):
     SessionInterface customizada para garantir cookies particionados (CHIPS),
     SameSite=None e Secure para operacao transparente dentro de iframes cross-origin.
     """
+    def get_cookie_secure(self, app: Any) -> bool:
+        # http://<IP> nao guarda cookie Secure: sem isso o login "entra" e volta para /login
+        if is_plain_http_ip_access():
+            return False
+        return super().get_cookie_secure(app)
+
+    def get_cookie_samesite(self, app: Any) -> Any:
+        if is_plain_http_ip_access():
+            return "Lax"
+        return super().get_cookie_samesite(app)
+
     def save_session(self, app: Any, session: Any, response: Any) -> None:
         super().save_session(app, session, response)
+        if is_plain_http_ip_access():
+            return
         cookies = response.headers.getlist("Set-Cookie")
         if cookies:
             response.headers.remove("Set-Cookie")
