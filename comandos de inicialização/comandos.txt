@@ -1,0 +1,4 @@
+Para iniciar pelo terminal:
+.\.venv\Scripts\python.exe app.py
+
+A aplicação escuta em 0.0.0.0. A porta é lida da variável PORT no arquivo .env (9376 neste ambiente). No VS Code, abra a aba "Ports", encaminhe essa porta e defina a visibilidade como "Public" para permitir acesso externo.

@@ -1,0 +1,30 @@
+exports/
+uploads/
+__pycache__/
+*.pyc
+api_debug.log
+.venv/
+.env
+
+# --- dados de clientes, credenciais e artefatos locais (nunca versionar) ---
+config.json
+data/
+chunk_uploads/
+conversions/
+video/
+scratch/
+.claude/
+.agents/
+audit_logs.jsonl
+*.log
+*.jsonl
+teste_*.csv
+nao apaga miseravel/
+documentacao_api_legada_backup.txt
+.env.*
+!.env.example
+
+# conteudo interno / dumps / documentacao com credenciais
+.env.example
+/-c
+estrategia OS/

@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enriquecimento de Dados - Nova Vida</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=1792180002" />
+  <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}?v=2" type="image/png">
+  <link rel="shortcut icon" href="/favicon.ico?v=2" type="image/png">
+</head>
+
+<body data-user-role="{{ user_role }}">
+  <!-- CSS Rain Animation Background -->
+  <div class="rain-bg"></div>
+
+  <header class="topbar">
+    <div class="brand-wrapper">
+      <img src="{{ url_for('static', filename='estrategia-logo.png') }}" alt="Logo Estratégia" class="brand-logo" />
+      <h1>Sistema de Enriquecimento e Importações</h1>
+    </div>
+    <div class="header-actions">
+      <!-- Seletor de Temas Moderno e Alinhado -->
+      <div class="theme-dropdown-wrapper" id="themeDropdownWrapper">
+        <button type="button" id="btnThemeDropdown" class="theme-dropdown-trigger" aria-haspopup="true" aria-expanded="false" title="Personalizar tema do sistema">
+          <span class="theme-current-swatch" id="themeCurrentSwatch"></span>
+          <span class="theme-current-name" id="themeCurrentName">Cyber Dark</span>
+          <svg class="theme-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="theme-dropdown-menu" id="themeDropdownMenu">
+          <div class="theme-dropdown-header">
+            <span>Tema do Sistema</span>
+          </div>
+          <div class="theme-options-grid">
+            <button type="button" class="theme-option-item" data-theme-name="classic">
+              <span class="theme-swatch" style="background: linear-gradient(135deg, #00d2ff, #0066eb);"></span>
+              <div class="theme-option-info">
+                <span class="theme-option-title">Cyber Dark</span>
+                <span class="theme-option-desc">Azul clássico noturno</span>
+              </div>
+            </button>
+
+            <button type="button" class="theme-option-item" data-theme-name="light">
+              <span class="theme-swatch" style="background: linear-gradient(135deg, #0ea5e9, #f1f5f9); border: 1px solid #cbd5e1;"></span>
+              <div class="theme-option-info">
+                <span class="theme-option-title">Modo Claro</span>
+                <span class="theme-option-desc">Clean e corporativo</span>
+              </div>
+            </button>
+
+            <button type="button" class="theme-option-item" data-theme-name="emerald">
+              <span class="theme-swatch" style="background: linear-gradient(135deg, #34d399, #059669);"></span>
+              <div class="theme-option-info">
+                <span class="theme-option-title">Esmeralda Pro</span>
+                <span class="theme-option-desc">Grafite e verde menta</span>
+              </div>
+            </button>
+
+            <button type="button" class="theme-option-item" data-theme-name="purple">
+              <span class="theme-swatch" style="background: linear-gradient(135deg, #c084fc, #9333ea);"></span>
+              <div class="theme-option-info">
+                <span class="theme-option-title">Roxo Velvet</span>
+                <span class="theme-option-desc">Violeta e neon</span>
+              </div>
+            </button>
+
+            <button type="button" class="theme-option-item" data-theme-name="sunset">
+              <span class="theme-swatch" style="background: linear-gradient(135deg, #fbbf24, #ea580c);"></span>
+              <div class="theme-option-info">
+                <span class="theme-option-title">Sunset</span>
+                <span class="theme-option-desc">Ambar e tons quentes</span>
+              </div>
+            </button>
+
+            <button type="button" class="theme-option-item" data-theme-name="oled">
+              <span class="theme-swatch" style="background: #000000; border: 1px solid #38bdf8;"></span>
+              <div class="theme-option-info">
+                <span class="theme-option-title">Midnight OLED</span>
+                <span class="theme-option-desc">Preto puro de alto contraste</span>
+              </div>
+            </button>
+
+            <button type="button" class="theme-option-item" data-theme-name="rainbow">
+              <span class="theme-swatch" style="background: linear-gradient(135deg, #84cc16, #eab308, #f97316, #ef4444, #d946ef, #7c3aed, #0284c7);"></span>
+              <div class="theme-option-info">
+                <span class="theme-option-title">Arco-íris</span>
+                <span class="theme-option-desc">Paleta espectral em camadas</span>
+              </div>
+            </button>
+
+            <button type="button" class="theme-option-item" data-theme-name="rgb_cycle">
+              <span class="theme-swatch rgb-animated-swatch"></span>
+              <div class="theme-option-info">
+                <span class="theme-option-title">Ciclo RGB Automático</span>
+                <span class="theme-option-desc">Alterna temas a cada 10 segundos de forma gradual</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+      <button type="button" id="btnDesktopNotification" class="header-action-btn" title="Ativar notificações na área de trabalho">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="btn-text">Notificações</span>
+      </button>
+
+      <button type="button" id="btnOpenAuditLogs" class="header-action-btn" title="Visualizar logs de auditoria do sistema" onclick="openAuditModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <span class="btn-text">Auditoria</span>
+      </button>
+
+      <div class="user-info">
+        <span>Olá, {{ user_name }}</span>
+        <a href="{{ url_for('logout') }}" class="logout-link">Sair</a>
+      </div>
+      {% if user_role == 'admin' %}
+      <label class="role-switcher-wrap" for="roleSwitcher">
+        <span>Painel</span>
+        <select id="roleSwitcher" class="role-switcher">
+          <option value="admin" selected>Estratégia (Admin)</option>
+          <option value="admin-logs">Histórico / Logs</option>
+        </select>
+      </label>
+      {% endif %}
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="user-panel" class="panel is-visible">
+      <div class="panel-header">
+        <h2>Importação e enriquecimento</h2>
+      </div>
+
+      <div class="queue-tabs-wrapper" style="margin-bottom: 1.5rem;">
+        <button class="queue-tab is-active" data-user-tab="import">
+          <span>Importação</span>
+        </button>
+        <button class="queue-tab" data-user-tab="history">
+          <span>Histórico</span>
+        </button>
+        <button class="queue-tab" data-user-tab="converter">
+          <span>Converter</span>
+        </button>
+      </div>
+
+      <div id="user-import-section">
+        <div id="actionSelectionContainer" class="action-selection">
+          <div class="actions-row"
+            style="justify-content: flex-start; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+            <button type="button" class="mode-btn is-active" data-action-type="enrich_only">Apenas enriquecer</button>
+            <button type="button" class="mode-btn" data-action-type="queue_only">Subir fila</button>
+            <button type="button" class="mode-btn" data-action-type="enrich_and_queue">Enriquecer e subir</button>
+          </div>
+        </div>
+
+        <form id="uploadForm" class="upload-form hidden">
+          <div id="dropZone" class="drop-zone">
+            <span class="drop-zone-text">Arrastar e soltar arquivo aqui (.xlsx, .csv) ou clique para selecionar</span>
+            <input id="excelFile" name="file" type="file" accept=".xlsx,.xls,.csv" multiple />
+          </div>
+
+          <!-- Área de Arquivos Acumulados (Staging Queue) -->
+          <div id="stagedFilesContainer" class="staged-files-container hidden">
+            <div class="staged-files-header">
+              <span class="staged-files-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                <strong>Planilhas Selecionadas</strong>
+              </span>
+              <span id="stagedFilesCountBadge" class="staged-count-badge">0 arquivos</span>
+            </div>
+            <div id="stagedFilesList" class="staged-files-list"></div>
+            <div class="staged-files-footer">
+              <span id="stagedTotalSize" class="staged-total-size">Tamanho total: 0 KB</span>
+              <button type="button" id="btnClearStagedFiles" class="btn-clear-staged">Limpar lista</button>
+            </div>
+          </div>
+
+          <!-- Grupo de Ações de Upload (Individual ou Mesclado) -->
+          <div id="uploadActionsContainer" class="upload-actions-container">
+            <button id="btnSubmitSingleUpload" type="submit" class="primary">Validar arquivo</button>
+
+            <div id="multiFileActionButtons" class="multi-file-actions-row hidden">
+              <button id="btnMergeUpload" type="button" class="btn-merge-action primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                Mesclar planilhas
+              </button>
+              <button id="btnIndividualUpload" type="button" class="btn-individual-action secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                Subir arquivos individuais
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <div id="validationMessage" class="message hidden"></div>
+
+        <div id="validationWarningBox" class="warning-box hidden">
+          <div class="warning-box-content">
+            <span class="warning-icon">!</span>
+            <div class="warning-text-container">
+              <h4>Alerta de Pré-Validação de Dados</h4>
+              <p id="validationWarningText">Identificamos contatos com telefones sem DDD ou formato inválido.</p>
+            </div>
+          </div>
+          <div class="error-details-container">
+            <div class="error-details-header">Contatos com erro identificados:</div>
+            <div id="errorDetailsList" class="error-details-list"></div>
+          </div>
+          <div class="warning-box-actions">
+            <button id="btnProceedValidation" class="primary" type="button">Prosseguir mesmo assim</button>
+            <button id="btnCancelValidation" class="secondary" type="button">Corrigir planilha</button>
+          </div>
+        </div>
+
+        <div id="userNotifications" class="notification-list" style="display: none;"></div>
+
+        <!-- Pré-visualização da Planilha Carregada (Data Preview) -->
+        <div id="dataPreviewContainer" class="data-preview-card hidden">
+          <div class="data-preview-header">
+            <div class="data-preview-title">
+              <span class="preview-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+              </span>
+              <div>
+                <strong>Prévia da Planilha Carregada</strong>
+                <span id="previewFileMeta" class="preview-file-meta">(0 linhas identificadas)</span>
+              </div>
+            </div>
+            <div class="detected-columns-badges" id="detectedColumnsBadges"></div>
+          </div>
+          <div class="data-preview-table-wrapper" id="dataPreviewTableWrapper">
+            <table class="data-preview-table" id="dataPreviewTable">
+              <thead id="dataPreviewTableHead"></thead>
+              <tbody id="dataPreviewTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Diagnóstico Pré-Upload (Pre-flight Check) & Opções de Desduplicação -->
+        <div id="preflightDiagnosticCard" class="preflight-card hidden">
+          <div class="preflight-header">
+            <div class="preflight-title">
+              <span class="preflight-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </span>
+              <div>
+                <strong>Diagnóstico de Qualidade do Arquivo</strong>
+                <span class="preflight-sub">Análise automática da base importada</span>
+              </div>
+            </div>
+            <div class="preflight-score-badge" id="preflightQualityBadge">
+              <span>Qualidade: </span><strong id="preflightQualityScore">100%</strong>
+            </div>
+          </div>
+
+          <div class="preflight-grid">
+            <div class="preflight-metric">
+              <span class="metric-num" id="preflightTotalRows">0</span>
+              <span class="metric-desc">Linhas Totais</span>
+            </div>
+            <div class="preflight-metric success">
+              <span class="metric-num" id="preflightUniqueRows">0</span>
+              <span class="metric-desc">Registros Únicos</span>
+            </div>
+            <div class="preflight-metric warning">
+              <span class="metric-num" id="preflightDuplicates">0</span>
+              <span class="metric-desc">Duplicados Identificados</span>
+            </div>
+            <div class="preflight-metric info">
+              <span class="metric-num" id="preflightColumnsCount">0</span>
+              <span class="metric-desc">Colunas Detectadas</span>
+            </div>
+          </div>
+
+          <div class="preflight-options-row">
+            <label class="preflight-toggle-label">
+              <input type="checkbox" id="chkDeduplicateRows" checked />
+              <span class="checkbox-custom"></span>
+              <span class="toggle-text">
+                <strong>Desduplicar registros automaticamente</strong>
+                <small>Remove registros repetidos por CPF ou Nome/Telefone para otimizar o tempo e economizar consultas.</small>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- PASSO 1: SELEÇÃO DE VARIÁVEIS PARA CONSULTA -->
+        <div id="step1Container" class="step-container hidden">
+          <div class="section-title" style="margin-bottom: 0.5rem; font-weight: bold;">
+            Selecione as variáveis da planilha para realizar a busca no enriquecimento
+          </div>
+          <p class="step-help" style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-muted);">
+            Selecione os campos da planilha que serão utilizados como parâmetros na consulta.
+          </p>
+          <div id="queryFieldsSelection"></div>
+          <div class="actions-row" style="margin-top: 1.25rem;">
+            <button id="enrichButton" class="primary" type="button">Continuar</button>
+          </div>
+        </div>
+
+        <!-- PASSO 2: PROGRESSO DO PROCESSAMENTO -->
+        <div id="step2Container" class="step-container hidden">
+          <div class="step-header-flex">
+            <div>
+              <div class="section-title" style="margin-bottom: 0.25rem; font-weight: 800; font-size: 1.15rem;">
+                Processando no plano de fundo...
+              </div>
+              <p id="progressSubheader" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+                Acompanhe o andamento das etapas em tempo real.
+              </p>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span class="stat-label">Processados</span>
+              <span id="statProcessed" class="stat-value">0 / 0</span>
+            </div>
+            <div class="stat-card success">
+              <span class="stat-label">Sucesso</span>
+              <span id="statSuccess" class="stat-value">0 (0%)</span>
+            </div>
+            <div class="stat-card danger">
+              <span class="stat-label">Falhas</span>
+              <span id="statError" class="stat-value">0 (0%)</span>
+            </div>
+            <div class="stat-card warning">
+              <span class="stat-label">Tempo Restante</span>
+              <span id="statTimeRemaining" class="stat-value">Calculando...</span>
+            </div>
+          </div>
+
+          <!-- NOVO CONTAINER DE ETAPAS / SKILL BARS DINÂMICAS -->
+          <div class="enrichment-progress-card">
+            <!-- Etapa 1: Validando o arquivo -->
+            <div id="stageBoxValidate" class="skill-box">
+              <div class="skill-box-header">
+                <span class="title">
+                  Validando o arquivo
+                </span>
+                <span id="stageBadgeValidate" class="stage-status-badge">Aguardando</span>
+              </div>
+              <div class="skill-bar">
+                <span id="stageBarValidate" class="skill-per stage-validate" style="width: 0%;">
+                  <span id="stageTooltipValidate" class="tooltip">0%</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Etapa 2: Enriquecendo o arquivo -->
+            <div id="stageBoxEnrich" class="skill-box">
+              <div class="skill-box-header">
+                <span class="title">
+                  Enriquecendo o arquivo
+                </span>
+                <span id="stageBadgeEnrich" class="stage-status-badge">Aguardando</span>
+              </div>
+              <div class="skill-bar">
+                <span id="stageBarEnrich" class="skill-per stage-enrich" style="width: 0%;">
+                  <span id="stageTooltipEnrich" class="tooltip">0%</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Etapa 3: Tratando as informações -->
+            <div id="stageBoxClean" class="skill-box">
+              <div class="skill-box-header">
+                <span class="title">
+                  Tratando as informações
+                </span>
+                <span id="stageBadgeClean" class="stage-status-badge">Aguardando</span>
+              </div>
+              <div class="skill-bar">
+                <span id="stageBarClean" class="skill-per stage-clean" style="width: 0%;">
+                  <span id="stageTooltipClean" class="tooltip">0%</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Etapa 4: Concatenando informações -->
+            <div id="stageBoxConcat" class="skill-box">
+              <div class="skill-box-header">
+                <span class="title">
+                  Concatenando informações
+                </span>
+                <span id="stageBadgeConcat" class="stage-status-badge">Aguardando</span>
+              </div>
+              <div class="skill-bar">
+                <span id="stageBarConcat" class="skill-per stage-concat" style="width: 0%;">
+                  <span id="stageTooltipConcat" class="tooltip">0%</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Seção Colapsável de Logs Técnicos -->
+          <div class="technical-logs-accordion">
+            <button id="btnToggleTechLogs" type="button" class="tech-logs-toggle-btn">
+              <span id="toggleLogsText">Mostrar detalhes técnicos do processamento</span>
+              <span id="toggleLogsArrow" class="accordion-arrow">▼</span>
+            </button>
+            <div id="uploadLogsBoxContainer" class="hidden">
+              <div id="uploadLogsBox" class="logs-console-box upload-logs-console"
+                style="height: 160px; overflow-y: auto; white-space: pre-wrap; line-height: 1.4; margin-top: 0.5rem;"></div>
+            </div>
+          </div>
+
+          <div class="actions-row" style="margin-top: 1.25rem; display: flex; justify-content: flex-end;">
+            <button id="cancelEnrichButton" class="secondary" type="button">Cancelar Enriquecimento</button>
+          </div>
+        </div>
+
+        <!-- PASSO 3: MAPEAMENTO DE ATRIBUTOS PARA A PLANILHA FINAL -->
+        <div id="step3Container" class="step-container hidden">
+          <div class="section-title" style="margin-bottom: 0.5rem; font-weight: bold;">Passo 2: Selecione os atributos do enriquecimento para adicionar à planilha final</div>
+          <div class="mapping-panel">
+            <div class="mapping-section">
+              <div class="section-title">Campos disponíveis</div>
+              <div id="availableFields" class="field-list" aria-label="Campos disponíveis"></div>
+            </div>
+            <div class="mapping-section">
+              <div class="section-title">Importação solicitada</div>
+              <div id="selectedFields" class="field-list selected-list" aria-label="Campos selecionados"></div>
+            </div>
+          </div>
+
+          <div id="previewCard" class="preview-card" style="margin-top: 1.5rem;">
+            <div class="section-title" style="font-weight: bold; margin-bottom: 0.5rem;">Pré-visualização da Concatenação</div>
+            <div id="previewText" class="preview-text">Selecione os campos acima para gerar a prévia.</div>
+          </div>
+
+          <!-- SELETOR DE FORMATO DE DEVOLUÇÃO (BOTÕES RADIO) -->
+          <div class="export-format-card" id="exportFormatCard">
+            <div class="export-format-header">
+              <div class="export-format-header-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                <span>Formato de Devolução da Planilha</span>
+              </div>
+              <span class="export-format-subtitle">Escolha o modelo de layout para a devolução do arquivo enriquecido:</span>
+            </div>
+
+            <div class="export-format-options-grid" role="radiogroup" aria-label="Formato de devolução do arquivo">
+              <!-- Opção 1: Devolução da forma que o arquivo veio -->
+              <label class="export-format-option is-active" id="exportOptionOriginalLabel">
+                <input type="radio" name="exportFormatRadio" id="exportFormatOriginal" value="original" checked />
+                <div class="export-option-content">
+                  <div class="export-option-head">
+                    <div class="export-option-title-wrap">
+                      <span class="export-option-title">Devolução da forma que o arquivo veio</span>
+                      <span class="export-badge badge-orig">Layout Original</span>
+                    </div>
+                  </div>
+                  <p class="export-option-desc">
+                    Mantém a mesma aba, formatação e a ordem original de todas as linhas da planilha enviada, inserindo apenas as novas colunas enriquecidas.
+                  </p>
+                </div>
+              </label>
+
+              <!-- Opção 2: Com as abas separadas entre classes de resultados -->
+              <label class="export-format-option" id="exportOptionTabsLabel">
+                <input type="radio" name="exportFormatRadio" id="exportFormatTabs" value="standard" />
+                <div class="export-option-content">
+                  <div class="export-option-head">
+                    <div class="export-option-title-wrap">
+                      <span class="export-option-title">Abas separadas entre classes de resultados</span>
+                      <span class="export-badge badge-tabs">3 Abas</span>
+                    </div>
+                  </div>
+                  <p class="export-option-desc">
+                    Gera a planilha dividida em abas específicas: <strong>Enriquecido</strong> (sucessos), <strong>Falha</strong> (inconsistências) e <strong>Resumo</strong> estatístico analítico.
+                  </p>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="actions-row" style="margin-top: 1.5rem;">
+            <button id="finalizeButton" class="primary" type="button">Finalizar</button>
+          </div>
+        </div>
+
+      </div> <!-- Fim de user-import-section -->
+
+      <!-- Histórico de Importações e Devolutivas para Usuários Normais -->
+      <div id="normalUserHistoryContainer" class="step-container hidden" style="margin-top: 0;">
+        <!-- Mini-Dashboard de Métricas do Usuário -->
+        <div class="history-metrics-grid" id="historyMetricsGrid">
+          <div class="metric-card">
+            <span class="metric-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            </span>
+            <div class="metric-info">
+              <span class="metric-label">Linhas Processadas</span>
+              <span class="metric-val" id="metricTotalRows">0</span>
+            </div>
+          </div>
+          <div class="metric-card success">
+            <span class="metric-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </span>
+            <div class="metric-info">
+              <span class="metric-label">Contatos Localizados</span>
+              <span class="metric-val" id="metricEnrichedRows">0</span>
+            </div>
+          </div>
+          <div class="metric-card info">
+            <span class="metric-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            </span>
+            <div class="metric-info">
+              <span class="metric-label">Arquivos / Lotes</span>
+              <span class="metric-val" id="metricTotalFiles">0</span>
+            </div>
+          </div>
+          <div class="metric-card warning">
+            <span class="metric-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/><circle cx="12" cy="12" r="4"/></svg>
+            </span>
+            <div class="metric-info">
+              <span class="metric-label">Assertividade Média</span>
+              <span class="metric-val" id="metricSuccessRate">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Barra de Busca Rápida e Filtros de Histórico -->
+        <div class="history-filter-bar">
+          <div class="history-search-wrap">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="historySearchInput" placeholder="Filtrar por solicitante, lote, fila..." />
+          </div>
+          <select id="historyModeFilter" class="history-mode-select">
+            <option value="all">Todos os Modos</option>
+            <option value="enrich_only">Apenas Enriquecer</option>
+            <option value="queue_only">Subir Fila</option>
+            <option value="enrich_and_queue">Enriquecer e Subir</option>
+          </select>
+          <div class="history-status-filters" id="historyStatusFilters">
+            <button type="button" class="history-filter-btn is-active" data-status="all">Todos</button>
+            <button type="button" class="history-filter-btn" data-status="completed">Concluídos</button>
+            <button type="button" class="history-filter-btn" data-status="processing">Processando</button>
+            <button type="button" class="history-filter-btn" data-status="pending">Pendentes</button>
+            <button type="button" class="history-filter-btn" data-status="rejected">Recusados</button>
+          </div>
+        </div>
+
+        <div id="normalUserHistoryQueue" class="queue-list">
+          <div class="queue-item"><strong>Carregando histórico...</strong></div>
+        </div>
+      </div>
+
+      <!-- ABA CONVERTER (Estilo iLovePDF) -->
+      <div id="user-converter-section" class="hidden">
+        <!-- Grade Inicial de Ferramentas -->
+        <div id="converterToolsView">
+          <div class="converter-header-banner">
+            <div class="converter-header-text">
+              <h3>Ferramentas de Conversão e PDF</h3>
+              <p>Converta, junte, divida, comprima e edite seus arquivos de forma rápida, segura e 100% online.</p>
+            </div>
+            <div class="converter-filter-pills">
+              <button type="button" class="filter-pill is-active" data-converter-filter="all">Todos</button>
+              <button type="button" class="filter-pill" data-converter-filter="from_pdf">Converter de PDF</button>
+              <button type="button" class="filter-pill" data-converter-filter="to_pdf">Converter para PDF</button>
+              <button type="button" class="filter-pill" data-converter-filter="organize">Organizar & Otimizar</button>
+            </div>
+          </div>
+
+          <div id="converterToolsGrid" class="converter-grid">
+            <!-- PDF para Word -->
+            <div class="tool-card" data-tool="pdf_to_word" data-category="from_pdf" data-accept=".pdf" data-title="PDF para Word" data-desc="Converta seus arquivos PDF em documentos DOCX editáveis com precisão." data-single="false">
+              <div class="tool-icon-wrap from-pdf">
+                <span class="tool-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+              </div>
+              <div class="tool-info">
+                <div class="tool-tag tag-pdf">De PDF</div>
+                <h4 class="tool-title">PDF para Word</h4>
+                <p class="tool-desc">Converta PDF para DOCX editável mantendo textos e tabelas.</p>
+              </div>
+            </div>
+
+            <!-- PDF para Excel -->
+            <div class="tool-card" data-tool="pdf_to_excel" data-category="from_pdf" data-accept=".pdf" data-title="PDF para Excel" data-desc="Extraia dados e tabelas do seu PDF diretamente para planilhas do Excel (.xlsx)." data-single="false">
+              <div class="tool-icon-wrap from-pdf">
+                <span class="tool-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M8 13h8M8 17h8M12 13v8"/></svg></span>
+              </div>
+              <div class="tool-info">
+                <div class="tool-tag tag-pdf">De PDF</div>
+                <h4 class="tool-title">PDF para Excel</h4>
+                <p class="tool-desc">Extraia tabelas e dados estruturados para planilha Excel (.xlsx).</p>
+              </div>
+            </div>
+
+            <!-- PDF para Imagens -->
+            <div class="tool-card" data-tool="pdf_to_images" data-category="from_pdf" data-accept=".pdf" data-title="PDF para Imagens" data-desc="Converta cada página do seu documento PDF em imagens PNG ou JPG de alta definição." data-single="false">
+              <div class="tool-icon-wrap from-pdf">
+                <span class="tool-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></span>
+              </div>
+              <div class="tool-info">
+                <div class="tool-tag tag-pdf">De PDF</div>
+                <h4 class="tool-title">PDF para Imagens</h4>
+                <p class="tool-desc">Extraia páginas do PDF em imagens PNG ou JPG de alta resolução.</p>
+              </div>
+            </div>
+
+            <!-- PDF para Texto -->
+            <div class="tool-card" data-tool="pdf_to_text" data-category="from_pdf" data-accept=".pdf" data-title="PDF para Texto" data-desc="Extraia todo o texto contido no PDF em um arquivo de texto limpo (.txt)." data-single="false">
+              <div class="tool-icon-wrap from-pdf">
+                <span class="tool-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="14" y2="17"/></svg></span>
+              </div>
+              <div class="tool-info">
+                <div class="tool-tag tag-pdf">De PDF</div>
+                <h4 class="tool-title">PDF para Texto</h4>
+                <p class="tool-desc">Extraia todo o texto do documento em arquivo .txt.</p>
+              </div>
+            </div>
+
+            <!-- Word para PDF -->
+            <div class="tool-card" data-tool="word_to_pdf" data-category="to_pdf" data-accept=".docx,.doc" data-title="Word para PDF" data-desc="Transforme seus documentos do Word (.docx) em arquivos PDF prontos para envio." data-single="false">
+              <div class="tool-icon-wrap to-pdf">
+                <span class="tool-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+              </div>
+              <div class="tool-info">
+                <div class="tool-tag tag-word">Para PDF</div>
+                <h4 class="tool-title">Word para PDF</h4>
+                <p class="tool-desc">Converta arquivos DOCX em PDF com formatação preservada.</p>
+              </div>
+            </div>
+
+            <!-- Word para Excel -->
+            <div class="tool-card" data-tool="word_to_excel" data-category="to_pdf" data-accept=".docx,.doc" data-title="Word para Excel" data-desc="Extraia tabelas e dados do seu documento Word diretamente para planilhas do Excel (.xlsx)." data-single="false">
+              <div class="tool-icon-wrap to-pdf">
+                <span class="tool-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M8 13h8M8 17h8M12 13v8"/></svg></span>
+              </div>
+              <div class="tool-info">
+                <div class="tool-tag tag-word">De Word</div>
+                <h4 class="tool-title">Word para Excel</h4>
+                <p class="tool-desc">Converta tabelas e dados do Word em planilha Excel (.xlsx).</p>
+              </div>
+            </div>
+
+
+            <!-- Excel/CSV para PDF -->
+            <div class="tool-card" data-tool="excel_to_pdf" data-category="to_pdf" data-accept=".xlsx,.xls,.csv" data-title="Excel / CSV para PDF" data-desc="Converta planilhas do Excel ou arquivos CSV em relatórios PDF limpos e tabulados." data-single="false">
+              <div class="tool-icon-wrap to-pdf">
+                <span class="tool-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></span>
+              </div>
+              <div class="tool-info">
+                <div class="tool-tag tag-excel">Para PDF</div>
+                <h4 class="tool-title">Excel / CSV para PDF</h4>
+                <p class="tool-desc">Transforme planilhas (.xlsx, .csv) em relatórios PDF.</p>
+              </div>
+            </div>
+
+            <!-- Imagens para PDF -->
+            <div class="tool-card" data-tool="images_to_pdf" data-category="to_pdf" data-accept=".png,.jpg,.jpeg,.webp,.bmp" data-title="Imagens para PDF" data-desc="Junte uma ou mais fotos e imagens em um único arquivo PDF organizado." data-single="false">
+              <div class="tool-icon-wrap to-pdf">
+                <span class="tool-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></span>
+              </div>
+              <div class="tool-info">
+                <div class="tool-tag tag-img">Para PDF</div>
+                <h4 class="tool-title">Imagens para PDF</h4>
+                <p class="tool-desc">Converta e agrupe fotos (JPG, PNG, WEBP) em documento PDF.</p>
+              </div>
+            </div>
+
+            <!-- Juntar / Mesclar PDFs -->
+            <div class="tool-card" data-tool="merge_pdf" data-category="organize" data-accept=".pdf" data-title="Juntar PDFs" data-desc="Mescle dois ou mais arquivos PDF em um único documento completo." data-single="false">
+              <div class="tool-icon-wrap organize">
+                <span class="tool-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>
+              </div>
+              <div class="tool-info">
+                <div class="tool-tag tag-organize">Organizar</div>
+                <h4 class="tool-title">Juntar PDFs</h4>
+                <p class="tool-desc">Mescle múltiplos arquivos PDF em um único documento.</p>
+              </div>
+            </div>
+
+            <!-- Dividir PDF -->
+            <div class="tool-card" data-tool="split_pdf" data-category="organize" data-accept=".pdf" data-title="Dividir PDF" data-desc="Extraia páginas específicas ou separe cada página do PDF em arquivos individuais." data-single="false">
+              <div class="tool-icon-wrap organize">
+                <span class="tool-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></span>
+              </div>
+              <div class="tool-info">
+                <div class="tool-tag tag-organize">Organizar</div>
+                <h4 class="tool-title">Dividir PDF</h4>
+                <p class="tool-desc">Separe páginas selecionadas ou divida por página inteira.</p>
+              </div>
+            </div>
+
+            <!-- Comprimir PDF -->
+            <div class="tool-card" data-tool="compress_pdf" data-category="organize" data-accept=".pdf" data-title="Comprimir PDF" data-desc="Reduza o tamanho do arquivo PDF otimizando recursos e mantendo a legibilidade." data-single="false">
+              <div class="tool-icon-wrap organize">
+                <span class="tool-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg></span>
+              </div>
+              <div class="tool-info">
+                <div class="tool-tag tag-organize">Otimizar</div>
+                <h4 class="tool-title">Comprimir PDF</h4>
+                <p class="tool-desc">Reduza o tamanho do PDF com otimização inteligente.</p>
+              </div>
+            </div>
+
+            <!-- Girar PDF -->
+            <div class="tool-card" data-tool="rotate_pdf" data-category="organize" data-accept=".pdf" data-title="Girar PDF" data-desc="Gire as páginas do documento na orientação correta (90°, 180°, 270°)." data-single="false">
+              <div class="tool-icon-wrap organize">
+                <span class="tool-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></span>
+              </div>
+              <div class="tool-info">
+                <div class="tool-tag tag-organize">Organizar</div>
+                <h4 class="tool-title">Girar PDF</h4>
+                <p class="tool-desc">Rotacione as páginas do PDF para a orientação correta.</p>
+              </div>
+            </div>
+
+            <!-- Proteger PDF -->
+            <div class="tool-card" data-tool="protect_pdf" data-category="organize" data-accept=".pdf" data-title="Proteger PDF" data-desc="Criptografe seu arquivo PDF com senha para impedir acessos não autorizados." data-single="false">
+              <div class="tool-icon-wrap organize">
+                <span class="tool-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+              </div>
+              <div class="tool-info">
+                <div class="tool-tag tag-organize">Segurança</div>
+                <h4 class="tool-title">Proteger PDF</h4>
+                <p class="tool-desc">Adicione uma senha forte e criptografe o documento.</p>
+              </div>
+            </div>
+
+            <!-- Desbloquear PDF -->
+            <div class="tool-card" data-tool="unlock_pdf" data-category="organize" data-accept=".pdf" data-title="Desbloquear PDF" data-desc="Remova a senha e proteção de um PDF fornecendo a chave de acesso." data-single="false">
+              <div class="tool-icon-wrap organize">
+                <span class="tool-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg></span>
+              </div>
+              <div class="tool-info">
+                <div class="tool-tag tag-organize">Segurança</div>
+                <h4 class="tool-title">Desbloquear PDF</h4>
+                <p class="tool-desc">Remova a senha de um PDF protegido.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Área de Trabalho / Conversão da Ferramenta Selecionada -->
+        <div id="converterWorkspaceContainer" class="hidden">
+          <div class="workspace-top-bar">
+            <button id="btnBackToTools" type="button" class="back-to-tools-btn">
+              <span>Voltar para todas as ferramentas</span>
+            </button>
+          </div>
+
+          <div class="workspace-card">
+            <div class="workspace-header">
+              <div class="workspace-header-icon" id="workspaceToolIcon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <div>
+                <h3 id="workspaceToolTitle">Nome da Ferramenta</h3>
+                <p id="workspaceToolDesc">Descrição da ferramenta e instruções de conversão.</p>
+              </div>
+            </div>
+
+            <!-- Drop Zone do Conversor -->
+            <div id="converterDropZone" class="converter-drop-zone">
+              <div class="converter-drop-content">
+                <div class="upload-icon-pulse">
+                  <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
+                <h4 id="converterDropTitle">Arraste e solte seus arquivos aqui</h4>
+                <p id="converterDropSub">ou clique para selecionar do seu computador</p>
+                <span id="converterDropAccepted" class="accepted-formats-badge">Formatos aceitos: .pdf</span>
+              </div>
+              <input type="file" id="converterFileInput" class="hidden" multiple />
+            </div>
+
+            <!-- Lista de Arquivos Selecionados -->
+            <div id="converterFileListContainer" class="converter-files-container hidden">
+              <div class="files-header">
+                <h5>Arquivos selecionados (<span id="converterFilesCount">0</span>)</h5>
+                <button type="button" id="btnAddMoreFiles" class="add-more-files-btn">+ Adicionar mais</button>
+              </div>
+              <div id="converterFileList" class="converter-files-list"></div>
+            </div>
+
+            <!-- Painel de Opções Dinâmicas da Ferramenta -->
+            <div id="converterDynamicOptions" class="converter-options-panel hidden">
+              <!-- Opções para Dividir PDF -->
+              <div id="optSplitPdf" class="tool-opt-block hidden">
+                <label class="opt-label">Modo de Divisão:</label>
+                <div class="opt-radio-group">
+                  <label class="opt-radio-label">
+                    <input type="radio" name="splitMode" value="all" checked />
+                    <span>Todas as páginas (Download em arquivo .ZIP)</span>
+                  </label>
+                  <label class="opt-radio-label">
+                    <input type="radio" name="splitMode" value="range" />
+                    <span>Intervalo personalizado</span>
+                  </label>
+                </div>
+                <div id="splitRangeInputWrapper" class="opt-input-wrapper hidden" style="margin-top: 0.5rem;">
+                  <label>Páginas para extrair (ex: 1-3, 5, 8-10):</label>
+                  <input type="text" id="splitPageRangeInput" placeholder="Ex: 1-3, 5, 8" />
+                </div>
+              </div>
+
+              <!-- Opções para Girar PDF -->
+              <div id="optRotatePdf" class="tool-opt-block hidden">
+                <label class="opt-label">Ângulo de Rotação:</label>
+                <div class="opt-buttons-group">
+                  <button type="button" class="opt-btn is-active" data-angle="90">90° Horário (+90°)</button>
+                  <button type="button" class="opt-btn" data-angle="180">180° Invertido (180°)</button>
+                  <button type="button" class="opt-btn" data-angle="270">270° Anti-horário (-90°)</button>
+                </div>
+              </div>
+
+              <!-- Opções para Proteger PDF -->
+              <div id="optProtectPdf" class="tool-opt-block hidden">
+                <label class="opt-label">Definir Senha de Proteção:</label>
+                <input type="password" id="protectPasswordInput" placeholder="Digite uma senha forte" />
+              </div>
+
+              <!-- Opções para Desbloquear PDF -->
+              <div id="optUnlockPdf" class="tool-opt-block hidden">
+                <label class="opt-label">Senha atual do arquivo:</label>
+                <input type="password" id="unlockPasswordInput" placeholder="Digite a senha para desbloquear" />
+              </div>
+
+              <!-- Opções para PDF para Imagens -->
+              <div id="optPdfToImages" class="tool-opt-block hidden">
+                <label class="opt-label">Formato das Imagens:</label>
+                <div class="opt-buttons-group">
+                  <button type="button" class="opt-btn is-active" data-format="png">PNG (Alta Qualidade)</button>
+                  <button type="button" class="opt-btn" data-format="jpg">JPG (Leve)</button>
+                  <button type="button" class="opt-btn" data-format="webp">WEBP (Moderno)</button>
+                </div>
+              </div>
+
+              <!-- Opções para PDF para Excel -->
+              <div id="optPdfToExcel" class="tool-opt-block hidden">
+                <label class="opt-label">Modo de Conversão e Extração:</label>
+                <div class="opt-buttons-group">
+                  <button type="button" class="opt-btn is-active" data-excel-mode="smart_enrich">Filtro Inteligente para Enriquecimento (Recomendado)</button>
+                  <button type="button" class="opt-btn" data-excel-mode="full">Extração Completa (Bruta)</button>
+                </div>
+                <p class="tool-opt-tip" style="margin-top: 6px; font-size: 0.82rem; color: #64748b; line-height: 1.4;">
+                  O Modo Inteligente descarta automaticamente preâmbulos, leis, avisos e textos soltos, organizando apenas nomes, telefones, CPFs e dados relevantes prontos para enriquecer.
+                </p>
+              </div>
+
+              <!-- Seleção e Intervalo de Páginas (Para ferramentas com base em PDF) -->
+              <div id="optPageSelection" class="tool-opt-block hidden" style="margin-top: 0.85rem; padding-top: 0.85rem; border-top: 1px solid rgba(255, 255, 255, 0.07);">
+                <label class="opt-label">Páginas para Converter:</label>
+                <div class="opt-radio-group">
+                  <label class="opt-radio-label">
+                    <input type="radio" name="converterPageMode" id="pageModeAll" value="all" checked />
+                    <span>Todas as páginas (Documento completo)</span>
+                  </label>
+                  <label class="opt-radio-label">
+                    <input type="radio" name="converterPageMode" id="pageModeRange" value="range" />
+                    <span>Selecionar intervalo de páginas (Ex: De X até Y)</span>
+                  </label>
+                </div>
+                <div id="converterPageRangeInputs" class="opt-input-wrapper hidden" style="margin-top: 0.75rem;">
+                  <div class="page-range-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; max-width: 380px;">
+                    <div>
+                      <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 4px;">De (Página inicial):</label>
+                      <input type="number" id="converterPageStartInput" min="1" placeholder="1" style="width: 100%;" />
+                    </div>
+                    <div>
+                      <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Até (Página final):</label>
+                      <input type="number" id="converterPageEndInput" min="1" placeholder="Ex: 5" style="width: 100%;" />
+                    </div>
+                  </div>
+                  <div style="margin-top: 0.5rem; max-width: 380px;">
+                    <label style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Ou digite páginas/intervalos livres (ex: 1-3, 5, 8-10):</label>
+                    <input type="text" id="converterPageCustomRangeInput" placeholder="Ex: 1-5, 8, 12-15" style="width: 100%; font-size: 0.85rem;" />
+                  </div>
+                  <p class="tool-opt-tip" style="margin-top: 6px; font-size: 0.78rem; color: var(--text-muted); line-height: 1.4;">
+                    Dica: Deixe "Até" em branco para converter a partir da página inicial até o final do documento.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botão de Ação -->
+            <div id="converterActionRow" class="actions-row hidden" style="margin-top: 1.5rem;">
+              <button type="button" id="btnExecuteConversion" class="primary btn-convert-now">
+                <span id="btnExecuteText">Converter Arquivo</span>
+              </button>
+            </div>
+
+            <!-- Barra de Progresso / Loading / Timer Dinâmico -->
+            <div id="converterProgressContainer" class="converter-progress-container hidden">
+              <div class="converter-progress-header">
+                <div class="converter-loader-spinner"></div>
+                <div class="converter-header-text">
+                  <h4 id="converterProgressTitle">Processando seu arquivo...</h4>
+                  <p id="converterProgressSub">Conversão em andamento com processamento em segundo plano.</p>
+                </div>
+              </div>
+
+              <!-- Grid de Estatísticas / Cronômetro em Tempo Real -->
+              <div class="converter-stats-grid">
+                <div class="converter-stat-card">
+                  <span class="converter-stat-label">Tempo Decorrido</span>
+                  <span id="statConverterTimeElapsed" class="converter-stat-value">00:00</span>
+                </div>
+                <div class="converter-stat-card info">
+                  <span class="converter-stat-label">Páginas / Etapa</span>
+                  <span id="statConverterPages" class="converter-stat-value">Iniciando...</span>
+                </div>
+                <div class="converter-stat-card warning">
+                  <span class="converter-stat-label">Tempo Estimado</span>
+                  <span id="statConverterTimeRemaining" class="converter-stat-value">Calculando...</span>
+                </div>
+              </div>
+
+              <!-- Barra de Progresso com Tooltip Dinâmico -->
+              <div class="converter-progress-bar-wrap">
+                <div class="converter-progress-bar">
+                  <div class="converter-progress-fill" id="converterProgressFill" style="width: 0%;">
+                    <span id="converterProgressTooltip" class="converter-tooltip">0%</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Descrição da etapa atual em execução -->
+              <div class="converter-current-step-wrap">
+                <span class="step-bullet-pulse"></span>
+                <span id="converterCurrentStepText" class="converter-current-step-text">Iniciando leitura do documento...</span>
+              </div>
+            </div>
+
+
+            <!-- Painel de Sucesso e Download -->
+            <div id="converterResultContainer" class="converter-result-card hidden">
+              <div class="success-check-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <h3>Pronto! Sua conversão foi concluída</h3>
+              <div class="result-file-details">
+                <span class="file-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+                </span>
+                <span id="resultFileName" class="file-name">documento_convertido.pdf</span>
+                <span id="resultFileSize" class="file-size">1.2 MB</span>
+              </div>
+              <div class="result-actions">
+                <a id="btnDownloadConvertedFile" class="download-link-premium" href="#" download style="padding: 10px 22px; font-size: 0.95rem;">
+                  <svg viewBox="0 0 256 256" height="24" width="26" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M74.34 85.66a8 8 0 0 1 11.32-11.32L120 108.69V24a8 8 0 0 1 16 0v84.69l34.34-34.35a8 8 0 0 1 11.32 11.32l-48 48a8 8 0 0 1-11.32 0ZM240 136v64a16 16 0 0 1-16 16H32a16 16 0 0 1-16-16v-64a16 16 0 0 1 16-16h52.4a4 4 0 0 1 2.83 1.17L111 145a24 24 0 0 0 34 0l23.8-23.8a4 4 0 0 1 2.8-1.2H224a16 16 0 0 1 16 16m-40 32a12 12 0 1 0-12 12a12 12 0 0 0 12-12" fill="currentColor"></path>
+                  </svg>
+                  <span>Baixar Arquivo Convertido</span>
+                </a>
+                <button type="button" id="btnEnrichConvertedFile" class="primary" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; font-size: 0.95rem; font-weight: 700; border-radius: 8px; cursor: pointer; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; color: #fff; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35); transition: transform 0.2s, box-shadow 0.2s;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+                  <span>Enriquecer esta Planilha</span>
+                </button>
+                <button type="button" id="btnConvertAnother" class="secondary">
+                  <span>Converter outro arquivo</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="strategy-panel" class="panel hidden">
+      <div class="panel-header">
+        <h2>Fila de estratégia</h2>
+      </div>
+
+      <!-- Dashboard Executivo de Produtividade e Assertividade -->
+      <div class="strategy-analytics-dashboard" id="strategyAnalyticsDashboard">
+        <div class="analytics-card">
+          <span class="analytics-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </span>
+          <div class="analytics-info">
+            <span class="analytics-label">Volume de Registros</span>
+            <span class="analytics-value" id="dashTotalRecords">0</span>
+          </div>
+        </div>
+
+        <div class="analytics-card success">
+          <span class="analytics-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </span>
+          <div class="analytics-info">
+            <span class="analytics-label">Contatos Enriquecidos</span>
+            <span class="analytics-value" id="dashEnrichedRecords">0</span>
+          </div>
+        </div>
+
+        <div class="analytics-card warning">
+          <span class="analytics-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/><circle cx="12" cy="12" r="4"/></svg>
+          </span>
+          <div class="analytics-info">
+            <span class="analytics-label">Assertividade Geral</span>
+            <span class="analytics-value" id="dashAssertiveness">0%</span>
+          </div>
+        </div>
+
+        <div class="analytics-card info">
+          <span class="analytics-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </span>
+          <div class="analytics-info">
+            <span class="analytics-label">Filas Concluídas / Recusadas</span>
+            <span class="analytics-value"><span id="dashCompletedQueues">0</span> / <span id="dashRejectedQueues">0</span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="queue-tabs-wrapper">
+        <button class="queue-tab is-active" data-queue-tab="active">
+          <span>Fila Ativa</span>
+          <span class="queue-tab-badge" id="activeBadge">0</span>
+        </button>
+        <button class="queue-tab" data-queue-tab="history">
+          <span>Histórico</span>
+          <span class="queue-tab-badge" id="historyBadge">0</span>
+        </button>
+      </div>
+
+      <div id="strategyNotifications" class="notification-list" style="display: none;"></div>
+
+      <div id="strategyQueueActive" class="queue-list queue-tab-content is-visible"></div>
+
+      <div id="strategyQueueHistoryContainer" class="queue-tab-content hidden">
+        <!-- Barra de Busca Rápida e Filtros no Histórico da Estratégia -->
+        <div class="history-filter-bar" style="margin-bottom: 1rem;">
+          <div class="history-search-wrap">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="strategyHistorySearchInput" placeholder="Buscar por número da fila, solicitante, data..." />
+          </div>
+          <select id="strategyHistoryModeFilter" class="history-mode-select">
+            <option value="all">Todos os Modos</option>
+            <option value="enrich_only">Apenas Enriquecer</option>
+            <option value="queue_only">Subir Fila</option>
+            <option value="enrich_and_queue">Enriquecer e Subir</option>
+          </select>
+          <div class="history-status-filters" id="strategyHistoryStatusFilters">
+            <button type="button" class="history-filter-btn is-active" data-strategy-filter="all">Todos</button>
+            <button type="button" class="history-filter-btn" data-strategy-filter="completed">Concluídos</button>
+            <button type="button" class="history-filter-btn" data-strategy-filter="rejected">Recusados</button>
+          </div>
+        </div>
+
+        <div id="strategyQueueHistory" class="queue-list"></div>
+      </div>
+    </section>
+
+    <section id="logs-panel" class="panel hidden">
+      <div class="panel-header">
+        <h2>3. Histórico de Importações e Logs</h2>
+      </div>
+      <div id="logsQueue" class="queue-list">
+        <div class="queue-item"><strong>Carregando histórico...</strong></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="requestModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Identificação da Fila para Importação</h3>
+        <button type="button" class="close-modal" aria-label="Fechar modal">×</button>
+      </div>
+
+      <form id="requestForm" class="request-form">
+        <label>
+          Número da fila (6 dígitos)
+          <input id="queueNumber" name="queueNumber" type="text" inputmode="numeric" maxlength="6" required />
+        </label>
+
+        <label>
+          Nome do responsável pela importação
+          <input id="requesterName" name="requesterName" type="text" required />
+        </label>
+
+        <label>
+          Observações opcionais
+          <textarea id="observacoes" name="observacoes" rows="3"></textarea>
+        </label>
+
+        <div class="modal-actions">
+          <button type="button" class="secondary close-modal">Cancelar</button>
+          <button type="submit" class="primary">Importar e Baixar Planilha</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal para Envio e Enriquecimento de Lotes Individuais -->
+  <div id="batchUploadModal" class="modal hidden" role="dialog" aria-modal="true" style="z-index: 1040;">
+    <div class="modal-content" style="max-width: 580px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+          </svg>
+          <h3 id="batchUploadModalTitle" style="margin: 0; font-size: 1.2rem;">Processar Arquivos em Lotes Individuais</h3>
+        </div>
+        <button type="button" class="close-modal" onclick="closeBatchUploadModal()" aria-label="Fechar modal">×</button>
+      </div>
+
+      <form id="batchUploadForm" class="request-form" onsubmit="event.preventDefault(); submitBatchUpload();">
+        <p id="batchUploadModalDescription" style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1rem; line-height: 1.45;">
+          Você selecionou <strong id="batchUploadFilesCount" style="color: var(--text-main);">0 planilhas</strong>.
+        </p>
+
+        <label>
+          <span id="batchRequesterLabel">Nome do solicitante / responsável</span>
+          <input id="batchRequesterName" type="text" required placeholder="Digite seu nome ou setor" />
+        </label>
+
+        <!-- Seção de Numeração de Filas (para Subir Fila e Enriquecer e Subir) -->
+        <div id="batchQueueSection" style="margin-top: 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; flex-wrap: wrap; gap: 0.5rem;">
+            <label style="margin: 0; font-weight: 700; font-size: 0.88rem;">
+              Número da fila para cada arquivo (6 dígitos)
+            </label>
+            <button type="button" id="btnApplySameQueue" class="btn-apply-same-queue" title="Replicar o número da fila do primeiro arquivo para todas as planilhas">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+              <span>Mesma fila</span>
+            </button>
+          </div>
+
+          <div id="batchQueueFilesList" class="batch-queue-files-list">
+            <!-- Linhas dinâmicas por arquivo geradas via JS -->
+          </div>
+          <small style="display: block; color: var(--text-muted); font-size: 0.78rem; line-height: 1.4; margin-top: 4px;">
+            Dica: Digite a fila no 1º arquivo e clique em <strong>Mesma fila</strong> para preencher automaticamente os demais.
+          </small>
+        </div>
+
+        <label style="margin-top: 0.85rem;">
+          Observações adicionais (opcional)
+          <textarea id="batchObservacoes" rows="2" placeholder="Observações para este lote"></textarea>
+        </label>
+
+        <!-- Formato de Devolução para os Lotes -->
+        <div style="margin-top: 1rem;">
+          <label style="font-weight: 700; font-size: 0.88rem; color: var(--text-main); margin-bottom: 0.45rem; display: block;">
+            Formato de Devolução dos Arquivos:
+          </label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem;">
+            <label class="modal-radio-item is-active" id="batchRadioOrigLabel">
+              <input type="radio" name="batchExportFormat" id="batchFormatOriginal" value="original" checked />
+              <div style="display: flex; flex-direction: column;">
+                <span style="font-weight: 600; font-size: 0.84rem; color: var(--text-main);">Layout Original</span>
+                <span style="font-size: 0.74rem; color: var(--text-muted);">Mesma planilha + novas colunas</span>
+              </div>
+            </label>
+            <label class="modal-radio-item" id="batchRadioTabsLabel">
+              <input type="radio" name="batchExportFormat" id="batchFormatTabs" value="standard" />
+              <div style="display: flex; flex-direction: column;">
+                <span style="font-weight: 600; font-size: 0.84rem; color: var(--text-main);">Abas Separadas</span>
+                <span style="font-size: 0.74rem; color: var(--text-muted);">3 abas: Enriquecido, Falha e Resumo</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="modal-actions" style="margin-top: 1.4rem;">
+          <button type="button" class="secondary" onclick="closeBatchUploadModal()">Cancelar</button>
+          <button type="submit" id="btnConfirmBatchUpload" class="primary" style="display: inline-flex; align-items: center; gap: 6px;">
+            <span id="btnConfirmBatchUploadText">Iniciar Processamento</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de Conclusão de Lotes com Downloads Imediatos e ZIP -->
+  <div id="batchResultModal" class="modal hidden" role="dialog" aria-modal="true" style="z-index: 1060;">
+    <div class="modal-content" style="max-width: 650px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <div style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(16, 185, 129, 0.15); color: var(--success, #10b981);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h3 style="margin: 0; font-size: 1.25rem;">Lotes Processados com Sucesso!</h3>
+        </div>
+        <button type="button" class="close-modal" onclick="closeBatchResultModal()" aria-label="Fechar modal">×</button>
+      </div>
+
+      <div class="batch-result-body" style="padding-top: 0.5rem;">
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.2rem; line-height: 1.45;">
+          Todas as <strong id="batchResultTotalCount" style="color: var(--text-main);">0 planilhas</strong> foram tratadas e adicionadas à fila. Clique em <strong>Baixar Planilha</strong> no arquivo desejado para renomear e baixar, ou baixe todas em um único arquivo ZIP:
+        </p>
+
+        <div id="batchResultFilesList" class="batch-result-files-list" style="display: flex; flex-direction: column; gap: 0.75rem; max-height: 320px; overflow-y: auto; padding-right: 4px; margin-bottom: 1.25rem;">
+          <!-- Cards dinâmicos com download individual de cada arquivo tratado -->
+        </div>
+
+        <div class="modal-actions" style="margin-top: 1.25rem; display: flex; justify-content: flex-end; align-items: center; border-top: 1px solid var(--border); padding-top: 1.1rem; flex-wrap: wrap; gap: 0.75rem;">
+          <button type="button" id="btnDownloadBatchZip" class="primary" style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span id="btnDownloadBatchZipText">Baixar Todas em ZIP</span>
+          </button>
+          <button type="button" class="secondary" onclick="closeBatchResultModal()">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="logsModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-content log-modal-content">
+      <div class="modal-header">
+        <h3 id="logsModalTitle">Progresso da Solicitação</h3>
+        <button type="button" class="close-logs-modal close-modal" aria-label="Fechar modal">×</button>
+      </div>
+      <div class="log-summary-counters">
+        <div>Total de registros: <span id="logCounterTotal">0</span></div>
+        <div>Sucesso: <span id="logCounterSuccess" class="text-success">0</span></div>
+        <div>Falhas: <span id="logCounterError" class="text-danger">0</span></div>
+      </div>
+
+      <!-- Skill Bars in Modal -->
+      <div class="enrichment-progress-card modal-progress-card">
+        <div id="modalStageBoxValidate" class="skill-box">
+          <div class="skill-box-header">
+            <span class="title">Validando o arquivo</span>
+            <span id="modalStageBadgeValidate" class="stage-status-badge">Aguardando</span>
+          </div>
+          <div class="skill-bar">
+            <span id="modalStageBarValidate" class="skill-per stage-validate" style="width: 0%;">
+              <span id="modalStageTooltipValidate" class="tooltip">0%</span>
+            </span>
+          </div>
+        </div>
+
+        <div id="modalStageBoxEnrich" class="skill-box">
+          <div class="skill-box-header">
+            <span class="title">Enriquecendo o arquivo</span>
+            <span id="modalStageBadgeEnrich" class="stage-status-badge">Aguardando</span>
+          </div>
+          <div class="skill-bar">
+            <span id="modalStageBarEnrich" class="skill-per stage-enrich" style="width: 0%;">
+              <span id="modalStageTooltipEnrich" class="tooltip">0%</span>
+            </span>
+          </div>
+        </div>
+
+        <div id="modalStageBoxClean" class="skill-box">
+          <div class="skill-box-header">
+            <span class="title">Tratando as informações</span>
+            <span id="modalStageBadgeClean" class="stage-status-badge">Aguardando</span>
+          </div>
+          <div class="skill-bar">
+            <span id="modalStageBarClean" class="skill-per stage-clean" style="width: 0%;">
+              <span id="modalStageTooltipClean" class="tooltip">0%</span>
+            </span>
+          </div>
+        </div>
+
+        <div id="modalStageBoxConcat" class="skill-box">
+          <div class="skill-box-header">
+            <span class="title">Concatenando informações</span>
+            <span id="modalStageBadgeConcat" class="stage-status-badge">Aguardando</span>
+          </div>
+          <div class="skill-bar">
+            <span id="modalStageBarConcat" class="skill-per stage-concat" style="width: 0%;">
+              <span id="modalStageTooltipConcat" class="tooltip">0%</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="technical-logs-accordion" style="margin-top: 1rem;">
+        <button id="btnToggleModalTechLogs" type="button" class="tech-logs-toggle-btn">
+          <span id="toggleModalLogsText">Mostrar logs detalhados</span>
+          <span id="toggleModalLogsArrow" class="accordion-arrow">▼</span>
+        </button>
+        <div id="modalLogsBoxContainer" class="hidden">
+          <div id="logsModalContent" class="logs-console-box" style="margin-top: 0.5rem; height: 180px;"></div>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="margin-top: 1.25rem;">
+        <button type="button" class="secondary close-logs-modal close-modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Identificação do Solicitante no Enriquecimento -->
+  <div id="requesterModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Identificação do Solicitante</h3>
+        <button type="button" class="close-requester-modal close-modal" onclick="closeRequesterModal()">×</button>
+      </div>
+      <form id="requesterForm" class="request-form">
+        <label>
+          Nome do solicitante
+          <input id="requesterInputName" type="text" required placeholder="Digite seu nome" />
+        </label>
+
+        <!-- Formato de Devolução no Modal de Confirmação -->
+        <div style="margin-top: 1rem;">
+          <label style="font-weight: 600; font-size: 0.88rem; color: var(--text-main); margin-bottom: 0.45rem; display: block;">
+            Formato de devolução da planilha:
+          </label>
+          <div style="display: flex; flex-direction: column; gap: 0.55rem;">
+            <label class="modal-radio-item is-active" id="modalRadioOrigLabel">
+              <input type="radio" name="modalExportFormat" id="modalFormatOriginal" value="original" checked />
+              <div style="display: flex; flex-direction: column;">
+                <span style="font-weight: 600; font-size: 0.85rem; color: var(--text-main);">Devolução da forma que o arquivo veio</span>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Mantém a ordem original da planilha adicionando as novas colunas</span>
+              </div>
+            </label>
+            <label class="modal-radio-item" id="modalRadioTabsLabel">
+              <input type="radio" name="modalExportFormat" id="modalFormatTabs" value="standard" />
+              <div style="display: flex; flex-direction: column;">
+                <span style="font-weight: 600; font-size: 0.85rem; color: var(--text-main);">Abas separadas entre classes de resultados</span>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Gera 3 abas: Enriquecido, Falha e Resumo Analítico</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="modal-actions" style="margin-top: 1.25rem;">
+          <button type="button" class="secondary" onclick="closeRequesterModal()">Cancelar</button>
+          <button type="submit" class="primary">Iniciar Enriquecimento</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal para Recusar Solicitação (Estratégia) -->
+  <div id="refuseModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Recusar Solicitação</h3>
+        <button type="button" class="close-refuse-modal close-modal" onclick="closeRefuseModal()">×</button>
+      </div>
+      <form id="refuseForm" class="request-form">
+        <label>
+          Motivo da recusa
+          <textarea id="refuseReasonInput" required placeholder="Digite o motivo da recusa"
+            style="width: 100%; min-height: 80px; padding: 0.5rem; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg); color: var(--text);"></textarea>
+        </label>
+        <div class="modal-actions">
+          <button type="button" class="secondary" onclick="closeRefuseModal()">Cancelar</button>
+          <button type="submit" class="primary"
+            style="background-color: var(--danger-color); border-color: var(--danger-color);">Confirmar Recusa</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal para Visualização do Motivo da Recusa -->
+  <div id="viewReasonModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Motivo da Recusa</h3>
+        <button type="button" class="close-view-reason-modal close-modal" onclick="closeViewReasonModal()">×</button>
+      </div>
+      <div
+        style="padding: 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 1rem; color: var(--text);">
+        <p id="viewReasonText" style="white-space: pre-wrap; line-height: 1.4;"></p>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="secondary" onclick="closeViewReasonModal()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- Modal para Visualização de Imagem de Devolutiva -->
+  <div id="imageViewerModal" class="modal hidden" role="dialog" aria-modal="true" style="z-index: 1000;">
+    <div class="modal-content"
+      style="max-width: 90%; background: var(--panel-solid); border: 1px solid var(--panel-border);">
+      <div class="modal-header">
+        <h3>Visualizar Devolutiva</h3>
+        <button type="button" class="close-image-modal close-modal" aria-label="Fechar"
+          onclick="closeImageViewer()">×</button>
+      </div>
+      <div
+        style="display: flex; justify-content: center; align-items: center; padding: 1rem; overflow: auto; background: #000; border-radius: var(--radius-md);">
+        <img id="viewerImage" src="" alt="Imagem de Devolutiva"
+          style="max-width: 100%; max-height: 70vh; object-fit: contain;" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Visualização dos Logs de Auditoria -->
+  <div id="auditModal" class="modal hidden" role="dialog" aria-modal="true" style="z-index: 1000;">
+    <div class="modal-content log-modal-content audit-modal-content" style="max-width: 900px; width: 95%;">
+      <div class="modal-header">
+        <h3>Registro de Auditoria de Atividades</h3>
+        <button type="button" class="close-audit-modal close-modal" onclick="closeAuditModal()">×</button>
+      </div>
+      <div class="audit-modal-body">
+        <div class="audit-filter-row" style="display: flex; gap: 0.75rem; margin-bottom: 1rem; align-items: center;">
+          <input type="text" id="auditSearchInput" placeholder="Filtrar por usuário, ação, detalhes..." class="audit-search-input" style="flex: 1; padding: 0.55rem 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg); color: var(--text);" />
+          <button type="button" id="btnRefreshAudit" class="secondary" style="padding: 0.55rem 1rem; font-size: 0.85rem;">Atualizar</button>
+        </div>
+        <div class="audit-table-wrapper" style="max-height: 380px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-sm);">
+          <table class="audit-table" id="auditTable" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem;">
+            <thead>
+              <tr style="background: var(--table-header-bg, rgba(255,255,255,0.05)); border-bottom: 1px solid var(--border);">
+                <th style="padding: 10px 14px;">Data/Hora</th>
+                <th style="padding: 10px 14px;">Usuário</th>
+                <th style="padding: 10px 14px;">Ação</th>
+                <th style="padding: 10px 14px;">Detalhes</th>
+                <th style="padding: 10px 14px;">IP</th>
+              </tr>
+            </thead>
+            <tbody id="auditTableBody">
+              <tr><td colspan="5" style="text-align:center; padding: 1.5rem; color: var(--text-muted);">Carregando registros de auditoria...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-actions" style="margin-top: 1.25rem;">
+        <button type="button" class="secondary" onclick="closeAuditModal()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para Confirmação e Personalização do Nome de Download -->
+  <div id="downloadRenameModal" class="modal hidden" role="dialog" aria-modal="true" style="z-index: 1200;">
+    <div class="modal-content" style="max-width: 520px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <h3 style="margin: 0; font-size: 1.25rem;">Opções de Download</h3>
+        </div>
+        <button type="button" class="close-download-modal close-modal" onclick="closeDownloadRenameModal()" aria-label="Fechar modal">×</button>
+      </div>
+
+      <div class="download-modal-body">
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 1.15rem; line-height: 1.45;">
+          Você pode renomear o arquivo ou manter o nome padrão antes de salvar no seu dispositivo.
+        </p>
+
+        <!-- Preview do Arquivo -->
+        <div class="download-file-preview-card" style="display: flex; align-items: center; gap: 0.85rem; padding: 0.85rem 1rem; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--panel-border); border-radius: var(--radius-sm); margin-bottom: 1.25rem;">
+          <div class="file-badge-icon" id="downloadModalFileIcon" style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 8px; background: rgba(0, 210, 255, 0.12); color: var(--primary); flex-shrink: 0;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div style="flex: 1; min-width: 0;">
+            <div id="downloadModalFileType" style="font-size: 0.76rem; text-transform: uppercase; font-weight: 700; color: var(--primary); letter-spacing: 0.05em;">Arquivo</div>
+            <div id="downloadModalDefaultName" style="font-size: 0.88rem; color: var(--text-main); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="">documento.xlsx</div>
+          </div>
+        </div>
+
+        <!-- Input de Renomeação -->
+        <form id="downloadRenameForm" onsubmit="event.preventDefault(); confirmDownloadCustomName();">
+          <label style="display: block; font-size: 0.86rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.45rem;">
+            Nome personalizado para o arquivo:
+          </label>
+          <div class="download-filename-input-group" style="display: flex; align-items: stretch; border: 1px solid var(--panel-border); border-radius: var(--radius-sm); background: rgba(7, 10, 19, 0.7); overflow: hidden;">
+            <input 
+              type="text" 
+              id="downloadCustomFilenameInput" 
+              required 
+              style="flex: 1; border: none; background: transparent; padding: 0.7rem 0.9rem; color: var(--text-main); font-size: 0.92rem; outline: none;" 
+              placeholder="Digite o nome do arquivo"
+              autocomplete="off"
+            />
+            <span id="downloadCustomExtensionBadge" style="display: flex; align-items: center; padding: 0 0.85rem; background: rgba(255, 255, 255, 0.07); color: var(--text-muted); font-weight: 700; font-size: 0.85rem; border-left: 1px solid var(--panel-border); user-select: none;">
+              .xlsx
+            </span>
+          </div>
+          <p style="margin-top: 0.45rem; font-size: 0.78rem; color: var(--text-muted);">
+            A extensão será preservada automaticamente. Caracteres especiais inválidos para nomes de arquivos serão tratados.
+          </p>
+
+          <div class="modal-actions" style="margin-top: 1.4rem; border-top: 1px solid rgba(255, 255, 255, 0.06); padding-top: 1.1rem;">
+            <button type="button" class="secondary" onclick="closeDownloadRenameModal()">Cancelar</button>
+            <button type="submit" id="btnConfirmCustomDownload" class="primary" style="display: inline-flex; align-items: center; gap: 6px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              <span>Baixar Arquivo</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='app.js') }}?v=1792180002"></script>
+</body>
+
+</html>
