@@ -32,18 +32,20 @@ from flask import Blueprint, current_app, jsonify, request, session
 integracao_bp = Blueprint("integracao_estrategia", __name__)
 
 # Configuracoes de ambiente
-DEFAULT_ESTRATEGIA_URL = "https://estrategia-os.vercel.app"
+DEFAULT_ESTRATEGIA_URL = "https://estrategiaos.bookplay.com.br"
+LEGACY_ESTRATEGIA_URL = "https://estrategia-os.vercel.app"  # plano de volta durante a transicao
 ESTRATEGIA_OS_URL = os.environ.get("ESTRATEGIA_OS_URL", DEFAULT_ESTRATEGIA_URL).strip().rstrip("/")
+# Origens que podem embutir este sistema em iframe e enviar AUTH_SESSION (lista separada por virgula).
 RAW_ALLOWED_ORIGINS = os.environ.get(
     "ESTRATEGIA_OS_ALLOWED_ORIGINS",
-    "https://estrategia-os.vercel.app,http://localhost:47821"
+    f"{DEFAULT_ESTRATEGIA_URL},{LEGACY_ESTRATEGIA_URL},http://localhost:47821"
 )
 ALLOWED_ORIGINS = set(
     origin.strip().rstrip("/")
     for origin in RAW_ALLOWED_ORIGINS.split(",")
     if origin.strip()
 )
-ALLOWED_ORIGINS.add(DEFAULT_ESTRATEGIA_URL)
+ALLOWED_ORIGINS.add(ESTRATEGIA_OS_URL)
 ALLOWED_ORIGINS.add("http://localhost:47821")
 
 # Cache em memoria da chave publica RSA do Estrategia OS
@@ -135,7 +137,7 @@ def fetch_estrategia_public_key() -> Optional[str]:
         _PUBLIC_KEY_EXPIRES_AT = now + _PUBLIC_KEY_CACHE_TTL
         return _PUBLIC_KEY_CACHE
 
-    pem_url = f"{ESTRATEGIA_OS_URL}/api/auth/public-key.pem"
+    pem_url = os.environ.get("OS_PUBLIC_KEY_URL", "").strip() or f"{ESTRATEGIA_OS_URL}/api/auth/public-key.pem"
     json_url = f"{ESTRATEGIA_OS_URL}/api/auth/public-key.json"
 
     context = ssl._create_unverified_context()

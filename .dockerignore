@@ -1,0 +1,17 @@
+# Este contêiner so precisa de static/ e docker/. Tudo o mais fica fora da imagem
+# (inclui segredos e dados de clientes, que nunca devem entrar numa imagem).
+*
+!static
+!docker
+!Dockerfile
+
+# redundancia explicita de seguranca
+.env*
+*.pem
+*.key
+*.sqlite*
+uploads
+exports
+data
+__pycache__
+*.log
