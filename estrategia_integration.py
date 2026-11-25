@@ -35,7 +35,12 @@ integracao_bp = Blueprint("integracao_estrategia", __name__)
 # Configuracoes de ambiente
 DEFAULT_ESTRATEGIA_URL = "https://estrategiaos.bookplay.com.br"
 LEGACY_ESTRATEGIA_URL = "https://estrategia-os.vercel.app"  # plano de volta durante a transicao
-ESTRATEGIA_OS_URL = os.environ.get("ESTRATEGIA_OS_URL", DEFAULT_ESTRATEGIA_URL).strip().rstrip("/")
+# OS_ORIGIN (nome usado pelo time do Estrategia OS) tem prioridade sobre ESTRATEGIA_OS_URL.
+ESTRATEGIA_OS_URL = (
+    os.environ.get("OS_ORIGIN", "").strip()
+    or os.environ.get("ESTRATEGIA_OS_URL", "").strip()
+    or DEFAULT_ESTRATEGIA_URL
+).rstrip("/")
 # Origens que podem embutir este sistema em iframe e enviar AUTH_SESSION (lista separada por virgula).
 RAW_ALLOWED_ORIGINS = os.environ.get(
     "ESTRATEGIA_OS_ALLOWED_ORIGINS",
@@ -46,6 +51,8 @@ ALLOWED_ORIGINS = set(
     for origin in RAW_ALLOWED_ORIGINS.split(",")
     if origin.strip()
 )
+# O dominio oficial do OS e o configurado sempre entram, mesmo que o .env ainda liste so o endereco antigo.
+ALLOWED_ORIGINS.add(DEFAULT_ESTRATEGIA_URL)
 ALLOWED_ORIGINS.add(ESTRATEGIA_OS_URL)
 ALLOWED_ORIGINS.add("http://localhost:47821")
 
@@ -138,35 +145,48 @@ def fetch_estrategia_public_key() -> Optional[str]:
         _PUBLIC_KEY_EXPIRES_AT = now + _PUBLIC_KEY_CACHE_TTL
         return _PUBLIC_KEY_CACHE
 
-    pem_url = os.environ.get("OS_PUBLIC_KEY_URL", "").strip() or f"{ESTRATEGIA_OS_URL}/api/auth/public-key.pem"
-    json_url = f"{ESTRATEGIA_OS_URL}/api/auth/public-key.json"
+    # Enderecos candidatos, em ordem: OS_PUBLIC_KEY_URL, o OS configurado e o dominio oficial.
+    # Assim um .env ainda apontando para o endereco antigo nao derruba o login automatico.
+    pem_urls: List[str] = []
+    json_urls: List[str] = []
+    explicit_pem = os.environ.get("OS_PUBLIC_KEY_URL", "").strip()
+    if explicit_pem:
+        pem_urls.append(explicit_pem)
+    for base in (ESTRATEGIA_OS_URL, DEFAULT_ESTRATEGIA_URL):
+        pem_urls.append(f"{base}/api/auth/public-key.pem")
+        json_urls.append(f"{base}/api/auth/public-key.json")
+    pem_urls = list(dict.fromkeys(pem_urls))
+    json_urls = list(dict.fromkeys(json_urls))
 
     context = ssl._create_unverified_context()
+    headers = {"User-Agent": "EnriquecimentoPlay-Integration/1.0"}
 
     # Tentativa 1: endpoint PEM plano
-    try:
-        req = urllib.request.Request(pem_url, headers={"User-Agent": "EnriquecimentoPlay-Integration/1.0"})
-        with urllib.request.urlopen(req, timeout=4.0, context=context) as resp:
-            content = resp.read().decode("utf-8").strip()
-            if "BEGIN PUBLIC KEY" in content:
-                _PUBLIC_KEY_CACHE = content
-                _PUBLIC_KEY_EXPIRES_AT = now + _PUBLIC_KEY_CACHE_TTL
-                return _PUBLIC_KEY_CACHE
-    except Exception:
-        pass
+    for pem_url in pem_urls:
+        try:
+            req = urllib.request.Request(pem_url, headers=headers)
+            with urllib.request.urlopen(req, timeout=4.0, context=context) as resp:
+                content = resp.read().decode("utf-8").strip()
+                if "BEGIN PUBLIC KEY" in content:
+                    _PUBLIC_KEY_CACHE = content
+                    _PUBLIC_KEY_EXPIRES_AT = now + _PUBLIC_KEY_CACHE_TTL
+                    return _PUBLIC_KEY_CACHE
+        except Exception:
+            pass
 
     # Tentativa 2: endpoint JSON
-    try:
-        req = urllib.request.Request(json_url, headers={"User-Agent": "EnriquecimentoPlay-Integration/1.0"})
-        with urllib.request.urlopen(req, timeout=4.0, context=context) as resp:
-            data = json.loads(resp.read().decode("utf-8"))
-            public_key = data.get("publicKey") or data.get("public_key")
-            if public_key and "BEGIN PUBLIC KEY" in public_key:
-                _PUBLIC_KEY_CACHE = public_key.strip()
-                _PUBLIC_KEY_EXPIRES_AT = now + _PUBLIC_KEY_CACHE_TTL
-                return _PUBLIC_KEY_CACHE
-    except Exception:
-        pass
+    for json_url in json_urls:
+        try:
+            req = urllib.request.Request(json_url, headers=headers)
+            with urllib.request.urlopen(req, timeout=4.0, context=context) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                public_key = data.get("publicKey") or data.get("public_key")
+                if public_key and "BEGIN PUBLIC KEY" in public_key:
+                    _PUBLIC_KEY_CACHE = public_key.strip()
+                    _PUBLIC_KEY_EXPIRES_AT = now + _PUBLIC_KEY_CACHE_TTL
+                    return _PUBLIC_KEY_CACHE
+        except Exception:
+            pass
 
     return _PUBLIC_KEY_CACHE
 

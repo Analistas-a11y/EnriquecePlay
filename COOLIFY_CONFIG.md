@@ -37,12 +37,13 @@ Hoje o `.env` ainda aponta só para o OS da Vercel e **tem prioridade sobre os p
 
 | Variável | Valor | Observação |
 |---|---|---|
-| `ESTRATEGIA_OS_URL` | `https://estrategiaos.bookplay.com.br` | de onde o backend busca a chave pública. Só troque quando o OS já estiver respondendo nesse domínio |
+| `OS_ORIGIN` | `https://estrategiaos.bookplay.com.br` | origem do OS (tem prioridade sobre `ESTRATEGIA_OS_URL`). O domínio novo também entra sempre no `frame-ancestors`, mesmo se o `.env` estiver desatualizado |
+| `ESTRATEGIA_OS_URL` | `https://estrategiaos.bookplay.com.br` | mesmo valor de `OS_ORIGIN` (mantido por compatibilidade) |
 | `ESTRATEGIA_OS_ALLOWED_ORIGINS` | `https://estrategiaos.bookplay.com.br,https://estrategia-os.vercel.app,http://localhost:47821` | mantém a Vercel durante a transição; tire-a depois de alguns dias |
 | `CLIENT_IP_HEADER` | `X-Original-Client-IP` | passa a registrar o IP real do visitante no histórico/auditoria. Sem isso, aparece o IP do servidor da Coolify |
 | `SESSION_COOKIE_SECURE` / `SESSION_COOKIE_SAMESITE` | `1` / `None` | já estão assim; manter |
 | `INTEGRATION_API_KEY` | **não mudar** | o Estratégia OS guarda o mesmo valor |
-| `OS_PUBLIC_KEY_URL` | (opcional) `https://estrategiaos.bookplay.com.br/api/auth/public-key.pem` | só se a chave não estiver em `<ESTRATEGIA_OS_URL>/api/auth/public-key.pem` |
+| `OS_PUBLIC_KEY_URL` | `https://estrategiaos.bookplay.com.br/api/auth/public-key.pem` | de onde o backend busca a chave pública do login automático. Se falhar, o código tenta também `<OS_ORIGIN>` e o domínio oficial |
 
 Demais variáveis lidas pelo código (já existem no seu `.env`, sem mudança): `PORT`, `SECRET_KEY`, `ADMIN_PASSWORD`, `SAF_PASSWORD`, `ESTRATEGIA_PASSWORD`, `NOVA_VIDA_USER`, `NOVA_VIDA_PASSWORD`, `NOVA_VIDA_CLIENT`, `NOVA_VIDA_BASE_URL`, `NOVA_VIDA_API_URL`, `NOVA_VIDA_API_KEY`/`NOVA_VIDA_TOKEN`, `ENRICHMENT_CONCURRENCY`, `ENRICHMENT_CHUNK_SIZE`, `QUEUE_CHUNK_SIZE`, `SUPABASE_URL`, `SUPABASE_KEY`. O modelo está em `env.template`.
 
